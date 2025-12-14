@@ -574,103 +574,73 @@ All page content in `src/app/(public)/` can be edited directly in `.js` files. F
 
 ---
 
-## 📸 Visual Mockups & Placeholders
+## 📸 Website Screenshots & Gallery
 
-Below are example layouts showing how key sections appear:
+Add actual website screenshots below to showcase the live experience:
 
-### 1. Hero Section
-```
-┌─────────────────────────────────────┐
-│                                     │
-│   [SLIDE IMAGE PLACEHOLDER]         │
-│   "Feel Better with Wellvitas"      │
-│   [Book] [Learn More]               │
-│                                     │
-└─────────────────────────────────────┘
-```
+### 1. Homepage Hero Section
+![Homepage Hero](https://via.placeholder.com/1200x600?text=Homepage+Hero+Section)
+*Screenshot showing hero carousel, headline, and CTA buttons*
 
-**Placeholder Location:** `public/hero/slide*.jpg`
-
-### 2. Therapy Grid
-```
-┌──────────────────────────────────────────────┐
-│  Therapies                                   │
-│                                              │
-│  [Category Filter Buttons]                   │
-│                                              │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐    │
-│  │ [Image]  │ │ [Image]  │ │ [Image]  │    │
-│  │ Therapy  │ │ Therapy  │ │ Therapy  │    │
-│  │ Details  │ │ Details  │ │ Details  │    │
-│  └──────────┘ └──────────┘ └──────────┘    │
-│                                              │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐    │
-│  │ [Image]  │ │ [Image]  │ │ [Image]  │    │
-│  │ Therapy  │ │ Therapy  │ │ Therapy  │    │
-│  │ Details  │ │ Details  │ │ Details  │    │
-│  └──────────┘ └──────────┘ └──────────┘    │
-│                                              │
-└──────────────────────────────────────────────┘
-```
-
-**Placeholder Locations:** `public/therapies/*.jpg`
+### 2. Therapies Explorer
+![Therapies Grid](https://via.placeholder.com/1200x600?text=Therapies+Grid+View)
+*Screenshot of therapy cards with filtering and modal details*
 
 ### 3. Booking Flow
+![Booking Page](https://via.placeholder.com/1200x600?text=Booking+Flow)
+*Step-by-step appointment scheduling interface*
+
+### 4. Testimonials Section
+![Testimonials](https://via.placeholder.com/1200x600?text=Client+Testimonials)
+*Client success stories and ratings carousel*
+
+### 5. About Pages
+![About Section](https://via.placeholder.com/1200x600?text=About+Pages)
+*About, Our Story, and Team information pages*
+
+### 6. Mobile Responsiveness
+![Mobile Menu](https://via.placeholder.com/400x800?text=Mobile+Responsive+Design)
+*Mobile-friendly navigation and layout*
+
+### 7. Treatment Packages
+![Packages](https://via.placeholder.com/1200x600?text=Treatment+Packages)
+*Scrollable wellness package offerings*
+
+---
+
+## 🎨 How to Add Screenshots
+
+1. **Take screenshots** of your live site or local development environment
+2. **Save images** to `docs/screenshots/` folder (create if needed)
+3. **Update image paths** in this README:
+   ```markdown
+   ![Alt text](./docs/screenshots/hero-section.png)
+   ```
+4. **Commit and push** updated README with actual screenshots
+
+**Example Screenshot Locations:**
 ```
-┌─────────────────────────────────────┐
-│ Step 1: Select Therapy              │
-│ ┌─────────────────────────────────┐ │
-│ │ [Therapy Selection Dropdown]    │ │
-│ └─────────────────────────────────┘ │
-│                                     │
-│ Step 2: Choose Date & Time          │
-│ ┌─────────────────────────────────┐ │
-│ │ [Date Picker]  [Time Slots]     │ │
-│ └─────────────────────────────────┘ │
-│                                     │
-│ Step 3: Enter Details               │
-│ ┌─────────────────────────────────┐ │
-│ │ Name: [_________________]       │ │
-│ │ Email: [________________]       │ │
-│ │ Phone: [________________]       │ │
-│ └─────────────────────────────────┘ │
-│                                     │
-│                      [Book Now]     │
-└─────────────────────────────────────┘
+docs/
+└── screenshots/
+    ├── 01-hero-section.png
+    ├── 02-therapies-grid.png
+    ├── 03-booking-flow.png
+    ├── 04-testimonials.png
+    ├── 05-about-page.png
+    ├── 06-mobile-responsive.png
+    └── 07-treatment-packages.png
 ```
 
-### 4. Testimonials Carousel
-```
-┌──────────────────────────────────────────┐
-│  What Our Clients Say                    │
-│                                          │
-│  < ┌────────────────────────────┐ >    │
-│    │ ★★★★★                     │      │
-│    │ "Great experience..."      │      │
-│    │ – Sarah M.                 │      │
-│    └────────────────────────────┘      │
-│                                          │
-└──────────────────────────────────────────┘
-```
+### Screenshot Best Practices
 
-### 5. Header Navigation
-```
-┌─────────────────────────────────────────┐
-│ [Logo]  Home About Therapies Booking    │
-└─────────────────────────────────────────┘
-
-Mobile:
-┌──────────────────────────────┐
-│ [Logo]               [Menu]  │
-│                              │
-│ (When menu open)             │
-│ Home                         │
-│ About                        │
-│ Therapies                    │
-│ Booking                      │
-│ Visit Us                     │
-└──────────────────────────────┘
-```
+| Tip | Details |
+|-----|---------|
+| **Resolution** | Capture at 1200x600px for desktop, 400x800px for mobile |
+| **Quality** | Use PNG for screenshots (lossless) |
+| **Content** | Show real data and actual therapies |
+| **Consistent** | Use same viewport width across all desktop screenshots |
+| **Responsive** | Include at least one mobile screenshot |
+| **Optimization** | Compress images before committing (target <200KB each) |
 
 ---
 
