@@ -1,23 +1,37 @@
+import "@/styles/globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import WhatsAppFab from "@/components/WhatsAppFab";
+import { Montserrat } from "next/font/google";
+import { initStoryblok } from "@/lib/storyblok";
+
 export const metadata = {
-  title: "Appwrite + Next.js",
-  description: "Appwrite starter for Next.js",
+  title: "Wellvitas - Holistic Therapies in Glasgow",
+  description:
+    "Holistic therapies, wellness programmes, and lifestyle support in Glasgow.",
 };
+
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-montserrat",
+});
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/appwrite.svg" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:opsz,wght@14..32,100..900&family=Poppins:wght@300;400&display=swap"
-          rel="stylesheet"
-        />
-        <link rel="icon" type="image/svg+xml" href="/appwrite.svg" />
+        <link rel="icon" href="/W_favicon.ico" />
       </head>
-      <body className={"bg-[#FAFAFB] font-[Inter] text-sm text-[#56565C]"}>
-        {children}
+      <body
+        className={`${montserrat.variable} bg-(--color-page) font-sans text-sm text-slate-600`}
+      >
+        <Header />
+        <main>{children}</main>
+        <Footer />
+        <WhatsAppFab />
       </body>
     </html>
   );
