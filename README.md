@@ -385,20 +385,44 @@ export const THERAPIES = [
 
 ---
 
-## 🤝 Contributing
+## 👨‍💻 Development
 
-1. Fork repository
-2. Create feature branch: `git checkout -b feature/amazing`
-3. Commit changes: `git commit -m "Add amazing feature"`
-4. Push branch: `git push origin feature/amazing`
-5. Open Pull Request
+**Lead Developer:** [Viraj Jain](https://github.com/viraj1011JAIN)
 
-### Code Style
+This is a solo-developed project. While the codebase is open source under the MIT License, active development and maintenance are currently handled exclusively by the lead developer.
 
-- **JavaScript:** ES6+, arrow functions
-- **React:** Functional components, hooks
-- **CSS:** Tailwind utilities
-- **Files:** camelCase utils, PascalCase components
+### Development Workflow
+
+```bash
+# Create feature branch
+git checkout -b feature/new-therapy-page
+
+# Make changes and commit
+git commit -m "feat: add aromatherapy service page"
+
+# Push to repository
+git push origin feature/new-therapy-page
+
+# Merge when ready
+git checkout main
+git merge feature/new-therapy-page
+```
+
+### Code Standards
+
+- **JavaScript:** ES6+, arrow functions, async/await
+- **React:** Functional components with hooks
+- **Styling:** Tailwind CSS utilities only
+- **Naming:** 
+  - Components: `PascalCase.js`
+  - Utilities: `camelCase.js`
+  - Constants: `UPPER_SNAKE_CASE`
+
+### Feature Requests
+
+While contributions aren't currently accepted, feedback and feature suggestions are welcome:
+- Open an [issue](https://github.com/viraj1011JAIN/wellvitas-web/issues) with your suggestion
+- Email: contact@wellvitas.co.uk
 
 ---
 
