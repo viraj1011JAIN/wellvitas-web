@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppFab from "@/components/WhatsAppFab";
+import { AuthProvider } from "@/providers/AuthProvider";
 import { Montserrat } from "next/font/google";
 import { initStoryblok } from "@/lib/storyblok";
 
@@ -28,10 +29,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${montserrat.variable} bg-(--color-page) font-sans text-sm text-slate-600`}
       >
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <WhatsAppFab />
+        <AuthProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <WhatsAppFab />
+        </AuthProvider>
       </body>
     </html>
   );
