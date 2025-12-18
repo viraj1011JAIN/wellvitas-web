@@ -3,7 +3,7 @@
 import StoryblokClient from "storyblok-js-client";
 
 const storyblokApi = new StoryblokClient({
-  accessToken: process.env.NEXT_PUBLIC_STORYBLOK_TOKEN,
+  accessToken: process.env.NEXT_PUBLIC_STORYBLOK_ACCESS_TOKEN,
   cache: { type: "memory", clear: "auto" },
 });
 

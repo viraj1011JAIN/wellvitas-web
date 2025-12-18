@@ -46,10 +46,18 @@ export async function middleware(request) {
   const { data: { user }, error } = await supabase.auth.getUser()
 
   const pathname = request.nextUrl.pathname
-
+  
+  // Allow Storyblok preview requests
+  const isStoryblokPreview = request.nextUrl.searchParams.has('_storyblok')
+  
   // Add security headers
   response.headers.set('X-Content-Type-Options', 'nosniff')
-  response.headers.set('X-Frame-Options', 'DENY')
+  // Allow iframe embedding for Storyblok preview
+  if (isStoryblokPreview) {
+    response.headers.set('X-Frame-Options', 'ALLOWALL')
+  } else {
+    response.headers.set('X-Frame-Options', 'DENY')
+  }
   response.headers.set('X-XSS-Protection', '1; mode=block')
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
   response.headers.set('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')

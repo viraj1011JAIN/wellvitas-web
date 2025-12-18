@@ -25,6 +25,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link rel="icon" href="/W_favicon.ico" />
+        <script
+          src="https://app.storyblok.com/f/storyblok-v2-latest.js"
+          type="text/javascript"
+        />
       </head>
       <body
         className={`${montserrat.variable} bg-(--color-page) font-sans text-sm text-slate-600`}
