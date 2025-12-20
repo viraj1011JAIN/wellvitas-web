@@ -1,5 +1,5 @@
 "use client";
-import { storyblokEditable } from "@storyblok/react";
+import { storyblokEditable } from "@storyblok/react/rsc";
 
 export default function NewsSliderBlok({ blok }) {
   return (

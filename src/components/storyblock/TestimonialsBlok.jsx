@@ -1,5 +1,5 @@
 "use client";
-import { storyblokEditable } from "@storyblok/react";
+import { storyblokEditable } from "@storyblok/react/rsc";
 import TestimonialsCarousel from "../TestimonialsCarousel";
 
 export default function TestimonialsBlok({ blok }) {

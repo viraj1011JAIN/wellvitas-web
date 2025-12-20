@@ -1,0 +1,54 @@
+name: Deploy to Fasthosts
+
+on:
+  push:
+    branches:
+      - main
+  repository_dispatch:
+    types: [storyblok-publish]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Enable static export
+        run: |
+          sed -i 's|// output: '"'"'export'"'"',|output: '"'"'export'"'"',|' next.config.mjs
+          sed -i 's|// Note: Static export disables API routes and server-side features||' next.config.mjs
+
+      - name: Build Next.js app
+        run: npm run build
+        env:
+          NEXT_PUBLIC_STORYBLOK_ACCESS_TOKEN: ${{ secrets.STORYBLOK_ACCESS_TOKEN }}
+          NEXT_PUBLIC_STORYBLOK_BRAND_SPACE_ID: ${{ secrets.STORYBLOK_SPACE_ID }}
+          NEXT_PUBLIC_STORYBLOK_DEFAULT_SPACE_ID: ${{ secrets.STORYBLOK_SPACE_ID }}
+          NEXT_PUBLIC_STORYBLOK_REGION: eu
+
+      - name: Deploy to Fasthosts via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /public_html/
+          local-dir: ./out/
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.next/**

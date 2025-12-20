@@ -1,5 +1,6 @@
 "use client";
-import { storyblokEditable, StoryblokComponent } from "@storyblok/react";
+import { storyblokEditable } from "@storyblok/react/rsc";
+import { StoryblokServerComponent } from "@storyblok/react/rsc";
 
 export default function TherapiesSectionBlok({ blok }) {
   return (
@@ -14,7 +15,7 @@ export default function TherapiesSectionBlok({ blok }) {
       {blok.therapies && blok.therapies.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {blok.therapies.map((therapy) => (
-            <StoryblokComponent blok={therapy} key={therapy._uid} />
+            <StoryblokServerComponent blok={therapy} key={therapy._uid} />
           ))}
         </div>
       ) : (

@@ -1,5 +1,5 @@
 "use client";
-import { storyblokEditable } from "@storyblok/react";
+import { storyblokEditable } from "@storyblok/react/rsc";
 import Link from "next/link";
 
 export default function HowToBookBlok({ blok }) {

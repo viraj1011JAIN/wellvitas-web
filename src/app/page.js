@@ -1,49 +1,33 @@
 // src/app/page.js
 
-import { fetchStory } from "@/lib/storyblok";
+import { getStoryblokApi } from "@/lib/storyblok";
+import { StoryblokStory } from "@storyblok/react/rsc";
 import StaticHome from "@/components/StaticHome";
-import { StoryblokComponent } from "@storyblok/react";
-import { getStoryblokApi } from "@storyblok/react/rsc";
 import StoryblokProvider from "@/components/StoryblokProvider";
 
-export const revalidate = 60;
+export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function HomePage({ searchParams }) {
   // Await searchParams in Next.js 15
   const params = await searchParams;
   const isStoryblokPreview = params?._storyblok;
   
-  // If not in preview mode, just show static homepage
+  // If not in preview mode, show static homepage
   if (!isStoryblokPreview) {
     return <StaticHome />;
   }
   
   try {
-    const story = await fetchStory("home", {
-      version: "draft",
+    const storyblokApi = getStoryblokApi();
+    
+    // Fetch the 'home' story
+    const { data } = await storyblokApi.get("cdn/stories/home", {
+      version: "draft", // Load draft to see changes instantly
+      cv: Date.now(), // Cache buster
     });
-    const body = story?.content?.body || [];
 
-    if (body.length) {
-      return (
-        <StoryblokProvider>
-          <main>
-            {body.length > 0 ? (
-              body.map((blok) => (
-                <StoryblokComponent blok={blok} key={blok._uid} />
-              ))
-            ) : (
-              <div style={{ padding: '2rem', textAlign: 'center' }}>
-                <p>No content blocks found in Storyblok. Add content blocks to your &apos;home&apos; story.</p>
-              </div>
-            )}
-          </main>
-        </StoryblokProvider>
-      );
-    }
-
-    // No blocks yet in Storyblok → fall back to your handcrafted homepage
-    return <StaticHome />;
+    // Render using StoryblokStory component
+    return <StoryblokStory story={data.story} />;
   } catch (error) {
     // If in preview mode, show helpful setup message
     if (isStoryblokPreview) {

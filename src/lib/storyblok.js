@@ -1,10 +1,7 @@
 // src/lib/storyblok.js
-import {
-  storyblokInit,
-  apiPlugin,
-  getStoryblokApi,
-  StoryblokComponent
-} from "@storyblok/react";
+import { storyblokInit, apiPlugin } from "@storyblok/react/rsc";
+
+// Import component wrappers
 import HeroCarouselBlok from "@/components/storyblock/HeroCarouselBlok";
 import TestimonialsBlok from "@/components/storyblock/TestimonialsBlok";
 import IntroBandBlok from "@/components/storyblock/IntroBandBlok";
@@ -13,30 +10,44 @@ import NewsSliderBlok from "@/components/storyblock/NewsSliderBlok";
 import HowToBookBlok from "@/components/storyblock/HowToBookBlok";
 import VisitUsBlok from "@/components/storyblock/VisitUsBlok";
 import TherapiesSectionBlok from "@/components/storyblock/TherapiesSectionBlok";
+import PageBlok from "@/components/storyblock/PageBlok";
+import SuperSaaSBookingBlok from "@/components/storyblock/SuperSaaSBookingBlok";
+import NavigationBlok from "@/components/storyblock/NavigationBlok";
+import FooterBlok from "@/components/storyblock/FooterBlok";
+import ButtonBlok from "@/components/storyblock/ButtonBlok";
+import ImageBlok from "@/components/storyblock/ImageBlok";
+import RichTextBlok from "@/components/storyblock/RichTextBlok";
+import SEOBlok from "@/components/storyblock/SEOBlok";
 
-// Register Storyblok components - keys must match Storyblok Block Library names
-const components = {
-  page: ({ blok }) => <div>{blok.body}</div>,
-  news_slider: NewsSliderBlok,
-  therapies_section: TherapiesSectionBlok,
-  testimonials_section: TestimonialsBlok,
-  packages_section: PackagesSectionBlok,
-  intro_band: IntroBandBlok,
-  how_to_book: HowToBookBlok,
-  visit_us: VisitUsBlok,
-};
-
-storyblokInit({
+// Initialize Storyblok with RSC support
+export const getStoryblokApi = storyblokInit({
   accessToken: process.env.NEXT_PUBLIC_STORYBLOK_ACCESS_TOKEN,
   use: [apiPlugin],
-  components,
   apiOptions: {
     region: process.env.NEXT_PUBLIC_STORYBLOK_REGION || "eu",
   },
+  components: {
+    page: PageBlok,
+    news_slider: NewsSliderBlok,
+    therapies_section: TherapiesSectionBlok,
+    testimonials_section: TestimonialsBlok,
+    packages_section: PackagesSectionBlok,
+    intro_band: IntroBandBlok,
+    how_to_book: HowToBookBlok,
+    visit_us: VisitUsBlok,
+    hero_carousel: HeroCarouselBlok,
+    // SuperSaaS Integration
+    supersaas_booking: SuperSaaSBookingBlok,
+    // Layout Components
+    navigation: NavigationBlok,
+    footer: FooterBlok,
+    // Reusable Components
+    button: ButtonBlok,
+    image: ImageBlok,
+    rich_text: RichTextBlok,
+    seo: SEOBlok,
+  },
 });
-
-// helper to render nested blok components
-export { StoryblokComponent };
 
 // simple fetch helper used by pages (server or client)
 export async function fetchStory(slug, params = {}) {

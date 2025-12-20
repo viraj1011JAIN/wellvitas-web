@@ -1,5 +1,5 @@
 "use client";
-import { storyblokEditable } from "@storyblok/react";
+import { storyblokEditable } from "@storyblok/react/rsc";
 import TreatmentPackagesScroller from "../TreatmentPackagesScroller";
 
 export default function PackagesSectionBlok({ blok }) {

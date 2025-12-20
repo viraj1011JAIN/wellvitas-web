@@ -1,5 +1,5 @@
 "use client";
-import { storyblokEditable } from "@storyblok/react";
+import { storyblokEditable } from "@storyblok/react/rsc";
 import HeroCarousel from "../HeroCarousel";
 
 export default function HeroCarouselBlok({ blok }) {
