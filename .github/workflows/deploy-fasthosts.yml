@@ -5,7 +5,7 @@ on:
     branches:
       - main
   repository_dispatch:
-    types: [storyblok-publish]
+    types: [publish_event, storyblok-publish]
   workflow_dispatch:
 
 jobs:
@@ -48,6 +48,11 @@ jobs:
           local-dir: ./out/
           dangerous-clean-slate: false
           exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.next/**
+            **/out/**
             **/.git*
             **/.git*/**
             **/node_modules/**

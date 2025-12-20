@@ -4,9 +4,15 @@ const nextConfig = {
   // GitHub Actions will enable this automatically
   // Note: Static export disables API routes and server-side features
   // output: 'export',
+  
+  // Storyblok Image Optimization (works with static export)
   images: {
-    unoptimized: true,
+    loader: 'custom',
+    loaderFile: './src/lib/imageLoader.js',
+    // Fallback for non-Storyblok images
+    unoptimized: false,
   },
+  
   trailingSlash: true,
 };
 
