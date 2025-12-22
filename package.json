@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "proxy": "local-ssl-proxy --source 3010 --target 3000 --cert certs/localhost.pem --key certs/localhost-key.pem",
+    "proxy": "local-ssl-proxy --source 3010 --target 3001 --cert certs/localhost.pem --key certs/localhost-key.pem",
     "build": "next build",
     "export": "next build",
     "start": "next start",

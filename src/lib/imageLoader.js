@@ -20,6 +20,11 @@
  */
 
 export default function storyblokImageLoader({ src, width, quality }) {
+  // Skip transformation for local images (from /public folder)
+  if (src.startsWith('/')) {
+    return src;
+  }
+  
   // Skip transformation for external URLs (non-Storyblok)
   if (!src.includes('a.storyblok.com')) {
     return src;
