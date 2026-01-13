@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wellvitas — We're almost ready</title>
+  <meta name="description" content="We're putting the final touches to our website. Leave your email and we'll let you know when we launch." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="/W_favicon.png" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;width:100%}
+    body{
+      font-family:"Montserrat",system-ui,Arial,Helvetica,sans-serif;
+      background:linear-gradient(180deg,#1a0033 0%,#2E0056 50%,#3d0070 100%);
+      color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:20px;min-height:100vh
+    }
+    .container{width:100%;max-width:900px;text-align:center}
+
+    .logo-favicon{width:140px;height:auto;margin-bottom:2px;background:#fff;padding:5px;border-radius:12px}
+    .logo-wordmark{width:600px;max-width:90%;height:auto}
+
+    .tagline{font-size:28px;font-weight:400;font-style:italic;line-height:1.5;margin:16px auto 6px;max-width:800px}
+
+    .info-section{margin-top:34px}
+
+    .info-row{display:flex;align-items:center;justify-content:center;margin:18px 0;font-size:20px;flex-wrap:wrap;gap:16px}
+
+    .info-label{font-weight:400;white-space:nowrap}
+
+    .email-form{align-items:center;justify-content:center;gap:0;background:#fff;border-radius:8px;padding:3px;max-width:420px}
+
+    input[type="email"]{flex:1;border:none;outline:none;padding:14px 18px;font-size:18px;font-family:inherit;border-radius:6px 0 0 6px;color:#999;min-width:0}
+    input[type="email"]::placeholder{color:#ccc}
+
+    button{appearance:none;border:none;background:transparent;cursor:pointer;padding:0;margin:0}
+    .subscribe-btn{background:#00A5AD;color:#fff;font-weight:700;padding:14px 24px;border-radius:0 6px 6px 0;font-size:18px;white-space:nowrap;transition:filter .2s}
+    .subscribe-btn:hover{filter:brightness(1.1)}
+
+    .info-link{color:#5fe3ea;text-decoration:none;font-weight:600;transition:opacity .2s}
+    .info-link:hover{opacity:.8}
+
+    .visit-text{font-size:20px;margin:26px 0 12px}
+    .address{color:#5fe3ea;font-size:26px;font-weight:700;line-height:1.5;margin-top:6px}
+
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+    @media (max-width:768px){
+      .logo-favicon{width:100px}
+      .logo-wordmark{width:450px}
+      .tagline{font-size:22px;margin:16px auto 4px}
+      .info-row{font-size:18px;margin:16px 0}
+      .email-form{max-width:100%;padding:1px}
+      input[type="email"]{width:100%;border-radius:6px;font-size:16px;padding:12px 16px}
+      .subscribe-btn{width:100%;border-radius:6px;padding:12px 20px;font-size:16px}
+      .visit-text{margin:22px 0 10px}
+      .address{font-size:22px;margin-top:4px}
+    }
+    @media (max-width:480px){
+      .tagline{font-size:19px}
+      .info-row{font-size:16px;margin:14px 0}
+      .visit-text{font-size:18px}
+      .address{font-size:20px}
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="logo-section">
+      <img src="/W_favicon.png" alt="" class="logo-favicon"><br>
+      <img src="/logo.png" alt="WELLVITAS" class="logo-wordmark">
+    </div>
+
+    <p class="tagline">
+      We are just putting the final touches to our website, but in the meantime you can:
+    </p>
+
+    <div class="info-section">
+      <form id="signup-form" method="POST"
+            action="https://script.google.com/macros/s/AKfycbyZbvdcNMs6BmvPCzfX8T-Iz17I7YWeWGBXcRs0UHv6_Y-kmxi398VvS7A0oNQJSocwIw/exec">
+        <div class="info-row">
+          <p class="info-label">Let us keep you updated:</p>
+          <div class="email-form">
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
+                   placeholder="Your email address" required />
+            <input type="text" name="website" class="sr-only" tabindex="-1" autocomplete="off" />
+            <input type="hidden" name="redirect" value="/thank-you.html" />
+            <button type="submit" class="subscribe-btn">Subscribe</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="info-row">
+        <span class="info-label">Email us for a brochure:</span>
+        <a class="info-link" href="mailto:info@wellvitas.co.uk">info@wellvitas.co.uk</a>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Call or Whatsapp us:</span>
+        <a class="info-link" href="tel:+447379005856">0737 900 58 56</a>
+      </div>
+
+      <p class="visit-text">Visit us and try out our treatments!</p>
+
+      <div class="address">
+        1626 Great Western Road<br>
+        Anniesland, Glasgow<br>
+        G13 1HH
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('signup-form');
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const fd = new FormData(form);
+      const email = (fd.get('email') || '').toString().trim();
+      const redirect = (fd.get('redirect') || '/thank-you.html').toString();
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      // Fire-and-forget: send data, redirect immediately
+      try {
+        fetch(form.action, { method: 'POST', body: fd, mode: 'no-cors', keepalive: true });
+      } catch (_) {
+        // ignore; fallback still navigates
+      }
+      // Tiny delay helps some mobile browsers flush the request
+      setTimeout(() => { window.location.href = redirect; }, 50);
+    });
+  </script>
+</body>
+</html>
