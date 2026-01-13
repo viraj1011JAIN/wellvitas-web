@@ -1,28 +1,23 @@
 "use client";
 import { storyblokEditable } from "@storyblok/react/rsc";
-import { StoryblokServerComponent } from "@storyblok/react/rsc";
+import HomeTherapies from "@/components/HomeTherapies";
+import TherapiesClient from "@/components/TherapiesClient";
 
 export default function TherapiesSectionBlok({ blok }) {
+  // Use explicit Storyblok field to control layout variant
+  const isFullPage = blok.variant === 'full';
+
+  if (isFullPage) {
+    return (
+      <div {...storyblokEditable(blok)}>
+        <TherapiesClient title={blok.heading} intro={blok.intro} items={blok.Cards} />
+      </div>
+    );
+  }
+
   return (
-    <section {...storyblokEditable(blok)} id="therapies" className="section">
-      {blok.heading && (
-        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center" style={{ color: "var(--color-brand-1)" }}>
-          {blok.heading}
-        </h2>
-      )}
-      
-      {/* Render therapy cards if provided, otherwise use HomeTherapies component */}
-      {blok.therapies && blok.therapies.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {blok.therapies.map((therapy) => (
-            <StoryblokServerComponent blok={therapy} key={therapy._uid} />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center text-gray-500">
-          Add therapy cards in Storyblok
-        </div>
-      )}
-    </section>
+    <div {...storyblokEditable(blok)}>
+      <HomeTherapies title={blok.heading} intro={blok.intro} items={blok.Cards} limit={6} />
+    </div>
   );
 }

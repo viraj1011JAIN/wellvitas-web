@@ -178,6 +178,7 @@ function slugToTitle(slug) {
 }
 
 function ensureLeadingSlash(p) {
+  if (p.startsWith("http")) return p;
   return p.startsWith("/") ? p : `/${p}`;
 }
 
@@ -191,11 +192,26 @@ function ensureLeadingSlash(p) {
  */
 export function therapyImage(input, opts) {
   const t = typeof input === "string" ? getTherapyBySlug(input) : input;
-  const slug = typeof input === "string" ? input : input.slug;
 
-  const candidate = (t?.image ?? `/therapies/${slug}.jpg`).trim();
+  // Handle slug extraction (support Storyblok fallback)
+  let slug = typeof input === "string" ? input : (input?.slug || "");
+  if (!slug && t?.name) {
+    slug = t.name.toLowerCase().replace(/\s+/g, '-');
+  }
+
+  // Handle image extraction (support Storyblok Asset object)
+  let imageCandidate = t?.image;
+  if (typeof imageCandidate === 'object' && imageCandidate?.filename) {
+    imageCandidate = imageCandidate.filename;
+  }
+
+  // If candidate is found/valid, use it. Otherwise construct default path.
+  const candidate = (typeof imageCandidate === 'string' && imageCandidate.length > 0)
+    ? imageCandidate
+    : `/therapies/${slug || 'default'}.jpg`;
+
   const src = ensureLeadingSlash(candidate || opts?.fallback || THERAPY_FALLBACK_IMAGE);
-  const alt = t?.name || slugToTitle(slug);
+  const alt = t?.name || (slug ? slugToTitle(slug) : "Therapy");
 
   return { src, alt };
 }

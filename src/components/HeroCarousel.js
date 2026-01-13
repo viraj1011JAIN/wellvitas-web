@@ -1,5 +1,6 @@
 "use client";
 
+import { storyblokEditable } from "@storyblok/react/rsc";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
@@ -10,7 +11,26 @@ const defaultSlides = [
 ];
 
 /** @param {{ slides?: Array<{src:string,title?:string,href?:string,alt?:string}> }} props */
-export default function HeroCarousel({ slides = defaultSlides }) {
+export default function HeroCarousel({ slides: propSlides, blok }) {
+  // 1. Determine source of slides
+  let slides = defaultSlides;
+
+  // Storyblok: Expecting a field named 'slides' which contains a list of 'media_slide' blocks
+  if (blok?.slides?.length > 0) {
+    slides = blok.slides.map((slide) => ({
+      src: slide.image?.filename || "",
+      alt: slide.image?.alt || slide.title || "",
+      title: slide.title || "",
+      // Check for both 'link' (storyblok link field) and 'url' fallback
+      href: slide.link?.cached_url ? `/${slide.link.cached_url.replace(/^\//, '')}` : (slide.link?.url || ""),
+      original: slide,
+    }));
+  }
+  // If passed directly as prop (legacy or manual usage)
+  else if (propSlides && propSlides.length > 0) {
+    slides = propSlides;
+  }
+
   const [i, setI] = useState(0);
   const len = slides.length;
   const regionRef = useRef(null);
@@ -43,6 +63,9 @@ export default function HeroCarousel({ slides = defaultSlides }) {
     return () => clearInterval(id);
   }, [next]);
 
+  // If no slides, render nothing
+  if (!len) return null;
+
   return (
     <section className="section pt-0">
       <div
@@ -60,6 +83,7 @@ export default function HeroCarousel({ slides = defaultSlides }) {
         {slides.map((s, idx) => (
           <div
             key={idx}
+            {...(s.original ? storyblokEditable(s.original) : {})}
             className={`absolute inset-0 transition-opacity duration-500 ${i === idx ? "opacity-100" : "opacity-0"}`}
             aria-hidden={i === idx ? "false" : "true"}
             style={{

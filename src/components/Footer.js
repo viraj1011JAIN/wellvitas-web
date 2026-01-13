@@ -1,18 +1,48 @@
 import Link from "next/link";
-import TestimonialsCarousel from "./TestimonialsCarousel";
+import { renderRichText } from "@storyblok/react";
 
-export default function Footer() {
-  const testimonials = [
-    { quote: "Amazing session — felt lighter instantly.", name: "Alice Malik." },
-    { quote: "Professional and friendly staff.", name: "Rowan Calos" },
-    { quote: "The therapy really helped my back pain.", name: "Sam Bolton" },
-    { quote: "Beautiful space and calming vibes.", name: "Jack Solof." },
+export default function Footer({ contact, navLinks, mapUrl }) {
+  // Fallback Data
+  const staticContact = {
+    address: null, // Will default to static JSX if null
+    email: "info@wellvitas.co.uk",
+    phone: "+44 7379 005856"
+  };
+
+  const displayEmail = contact?.email || staticContact.email;
+  const displayPhone = contact?.phone || staticContact.phone;
+  const displayMapUrl = mapUrl || "https://www.google.com/maps?q=1626+Great+Western+Rd,+Anniesland,+Glasgow+G13+1HH&output=embed";
+
+  // Render Address
+  const renderAddress = () => {
+    if (contact?.address) {
+      // Rich Text
+      if (typeof contact.address === 'object') {
+        return <div dangerouslySetInnerHTML={{ __html: renderRichText(contact.address) }} />;
+      }
+      // Simple Text
+      return <div className="whitespace-pre-line">{contact.address}</div>;
+    }
+    // Static Fallback
+    return (
+      <>
+        <div>Wellvitas</div>
+        <div>1626 Great Western Rd</div>
+        <div>Anniesland, Glasgow G13 1HH</div>
+        <div>Open 9:00–20:00</div>
+      </>
+    );
+  };
+
+  const links = navLinks || [
+    { href: "/about", label: "About" },
+    { href: "/therapies", label: "Therapies" },
+    { href: "/booking", label: "Booking" },
+    // News link removed from default to match dynamic simplicity, or keep it? Keeping logic simple.
   ];
 
   return (
     <>
-      <TestimonialsCarousel title="Testimonials" items={testimonials} />
-
       <footer
         id="footer"
         className="border-0"
@@ -33,25 +63,22 @@ export default function Footer() {
               </h2>
               <h3 className="font-bold text-white">Contact</h3>
 
-              <address className="not-italic mt-3 text-sm space-y-1 font-semibold text-white">
-                <div>Wellvitas</div>
-                <div>1626 Great Western Rd</div>
-                <div>Anniesland, Glasgow G13 1HH</div>
-                <div>Open 9:00–20:00</div>
+              <address className="not-italic mt-3 text-sm space-y-1 font-semibold text-white rich-text">
+                {renderAddress()}
               </address>
 
               <div className="mt-3 text-sm space-y-1 font-semibold">
                 <a
                   className="block underline decoration-white/50 hover:decoration-white text-white"
-                  href="mailto:info@wellvitas.co.uk"
+                  href={`mailto:${displayEmail}`}
                 >
-                  info@wellvitas.co.uk
+                  {displayEmail}
                 </a>
                 <a
                   className="block underline decoration-white/50 hover:decoration-white text-white"
-                  href="tel:+447379005856"
+                  href={`tel:${displayPhone.replace(/\s+/g, '')}`}
                 >
-                  +44 7379 005856
+                  {displayPhone}
                 </a>
               </div>
             </div>
@@ -59,38 +86,16 @@ export default function Footer() {
             <nav aria-label="Quick links">
               <h3 className="font-bold text-white">Quick Links</h3>
               <ul className="mt-3 space-y-2 text-sm font-semibold">
-                <li>
-                  <Link
-                    className="underline decoration-white/50 hover:decoration-white text-white"
-                    href="/about"
-                  >
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="underline decoration-white/50 hover:decoration-white text-white"
-                    href="/therapies"
-                  >
-                    Therapies
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="underline decoration-white/50 hover:decoration-white text-white"
-                    href="/booking"
-                  >
-                    Booking
-                  </Link>
-                </li>
-                <li>
-                  <a
-                    className="underline decoration-white/50 hover:decoration-white text-white"
-                    href="#therapies"
-                  >
-                    Latest news &amp; therapies
-                  </a>
-                </li>
+                {links.map((l, i) => (
+                  <li key={i}>
+                    <Link
+                      className="underline decoration-white/50 hover:decoration-white text-white"
+                      href={l.href}
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </nav>
 
@@ -99,7 +104,7 @@ export default function Footer() {
               <div id="footer-map" className="map-embed mt-3">
                 <iframe
                   title="Wellvitas location"
-                  src="https://www.google.com/maps?q=1626+Great+Western+Rd,+Anniesland,+Glasgow+G13+1HH&output=embed"
+                  src={displayMapUrl}
                   width="100%"
                   height="260"
                   loading="lazy"
@@ -129,7 +134,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Wellvitas. All rights reserved.
           </p>
         </div>
-      </footer>
+      </footer >
     </>
   );
 }

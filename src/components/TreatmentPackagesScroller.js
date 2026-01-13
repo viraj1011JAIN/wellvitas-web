@@ -1,5 +1,4 @@
-"use client";
-
+import { storyblokEditable } from "@storyblok/react/rsc";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
@@ -42,10 +41,13 @@ const PACKAGES = [
   },
 ];
 
-export default function TreatmentPackagesScroller() {
+export default function TreatmentPackagesScroller({ items, title }) {
   const trackRef = useRef(null);
   const timerRef = useRef(null);
   const hoveringRef = useRef(false);
+
+  const packages = items || PACKAGES;
+  const sectionTitle = title || "Treatment Packages";
 
   // Auto-glide (pause on hover/focus; respect reduced motion)
   useEffect(() => {
@@ -102,7 +104,7 @@ export default function TreatmentPackagesScroller() {
       el.removeEventListener("focusin", onFocus);
       el.removeEventListener("focusout", onBlur);
     };
-  }, []);
+  }, [packages]); // Re-run if packages change
 
   const nudge = (dir) => {
     const el = trackRef.current;
@@ -129,7 +131,7 @@ export default function TreatmentPackagesScroller() {
       <div className="mx-auto max-w-7xl px-4 py-8">
         <div className="flex items-center justify-between mb-4">
           <h2 id="treatment-packages-heading" className="text-2xl md:text-3xl font-bold" style={{ color: "#2E0056" }}>
-            Treatment Packages
+            {sectionTitle}
           </h2>
 
           <div className="hidden md:flex gap-2">
@@ -176,10 +178,11 @@ export default function TreatmentPackagesScroller() {
             aria-roledescription="carousel"
             aria-label="Treatment packages"
           >
-            {PACKAGES.map((pkg) => (
+            {packages.map((pkg, i) => (
               <article
-                key={pkg.title}
+                key={i}
                 data-card
+                {...(pkg.original ? storyblokEditable(pkg.original) : {})}
                 className="shrink-0 snap-start rounded-2xl border-2 shadow-sm overflow-hidden"
                 style={{
                   background: "color-mix(in srgb, #2E0056 8%, white)",
@@ -190,14 +193,20 @@ export default function TreatmentPackagesScroller() {
                 tabIndex={0}
               >
                 {/* image */}
-                <div className="relative aspect-[16/10]">
-                  <Image
-                    src={pkg.img}
-                    alt={pkg.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 90vw, 33vw"
-                  />
+                <div className="relative aspect-[16/10] bg-slate-200">
+                  {pkg.img ? (
+                    <Image
+                      src={pkg.img}
+                      alt={pkg.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 90vw, 33vw"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-slate-400">
+                      No Image
+                    </div>
+                  )}
                   {pkg.badge ? (
                     <span
                       className="absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-bold shadow-card"

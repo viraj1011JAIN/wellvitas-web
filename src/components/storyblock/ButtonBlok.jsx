@@ -1,6 +1,6 @@
 // src/components/storyblock/ButtonBlok.jsx
 "use client";
-import { storyblokEditable } from "@storyblok/react/rsc";
+import { storyblokEditable } from "@storyblok/react";
 import Link from "next/link";
 
 export default function ButtonBlok({ blok }) {
@@ -8,7 +8,8 @@ export default function ButtonBlok({ blok }) {
     label = "Click Here",
     link,
     url,
-    variant = "primary",
+    variant,
+    Variant,
     size = "medium",
     full_width = false,
     open_in_new_tab = false,
@@ -19,31 +20,36 @@ export default function ButtonBlok({ blok }) {
   } = blok;
 
   const href = link?.cached_url || url || "#";
-  
+  const selectedVariant = Variant || variant || "primary";
+
   const variants = {
-    primary: "bg-purple-600 hover:bg-purple-700 text-white",
-    secondary: "bg-gray-600 hover:bg-gray-700 text-white",
-    outline: "border-2 border-purple-600 text-purple-600 hover:bg-purple-50",
-    ghost: "text-purple-600 hover:bg-purple-50",
+    primary: "btn-primary",
+    secondary: "btn-secondary",
+    outline: "btn-outline",
+    ghost: "btn-ghost",
   };
 
   const sizes = {
-    small: "px-4 py-2 text-sm",
-    medium: "px-6 py-3 text-base",
-    large: "px-8 py-4 text-lg",
+    small: "btn-sm",
+    medium: "",
+    large: "btn-lg",
   };
 
   const className = `
-    inline-flex items-center justify-center gap-2
-    font-semibold rounded-full transition-all
-    ${variants[variant] || variants.primary}
-    ${sizes[size] || sizes.medium}
-    ${full_width ? "w-full" : ""}
+    btn
+    ${variants[selectedVariant] || variants.primary}
+    ${sizes[size] || ""}
+    ${full_width ? "w-full flex" : ""}
   `.trim();
 
   const style = {};
   if (custom_bg_color) style.backgroundColor = custom_bg_color;
   if (custom_text_color) style.color = custom_text_color;
+
+  // Fix for outline/ghost buttons needing brand color text if not set generically
+  if ((selectedVariant === 'outline' || selectedVariant === 'ghost') && !custom_text_color) {
+    style.color = "var(--color-brand-1)";
+  }
 
   const content = (
     <>

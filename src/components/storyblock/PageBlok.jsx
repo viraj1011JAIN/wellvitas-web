@@ -1,10 +1,13 @@
-import { StoryblokServerComponent, storyblokEditable } from "@storyblok/react/rsc";
+"use client";
+import { storyblokEditable, StoryblokComponent } from "@storyblok/react";
 
 const PageBlok = ({ blok }) => (
   <main {...storyblokEditable(blok)}>
-    {blok.body?.map((nestedBlok) => (
-      <StoryblokServerComponent blok={nestedBlok} key={nestedBlok._uid} />
-    ))}
+    {(blok.page || blok.body || [])
+      .filter((nestedBlok) => nestedBlok.component)
+      .map((nestedBlok) => (
+        <StoryblokComponent blok={nestedBlok} key={nestedBlok._uid} />
+      ))}
   </main>
 );
 

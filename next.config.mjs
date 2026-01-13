@@ -4,7 +4,7 @@ const nextConfig = {
   // GitHub Actions will enable this automatically
   // Note: Static export disables API routes and server-side features
   // output: 'export',
-  
+
   // Storyblok Image Optimization (works with static export)
   images: {
     loader: 'custom',
@@ -12,8 +12,17 @@ const nextConfig = {
     // Fallback for non-Storyblok images
     unoptimized: false,
   },
-  
+
   trailingSlash: true,
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

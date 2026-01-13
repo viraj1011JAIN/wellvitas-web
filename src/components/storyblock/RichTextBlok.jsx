@@ -1,6 +1,6 @@
 // src/components/storyblock/RichTextBlok.jsx
 "use client";
-import { storyblokEditable } from "@storyblok/react/rsc";
+import { storyblokEditable, renderRichText } from "@storyblok/react";
 
 export default function RichTextBlok({ blok }) {
   const {
@@ -21,8 +21,11 @@ export default function RichTextBlok({ blok }) {
   }
 
   // Render HTML content from Storyblok Rich Text field
+  // content is an Object, must undergo renderRichText()
+  const htmlContent = renderRichText(content);
+
   return (
-    <div 
+    <div
       {...storyblokEditable(blok)}
       className="rich-text-content"
       style={{
@@ -34,9 +37,9 @@ export default function RichTextBlok({ blok }) {
         margin: "0 auto",
       }}
     >
-      <div 
-        className="prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: content }}
+      <div
+        className="prose prose-lg max-w-none text-slate-700 prose-headings:text-[#2E0056] prose-img:rounded-xl prose-a:text-[#7E0054] prose-table:border-collapse prose-table:w-full prose-th:border prose-th:border-slate-300 prose-th:p-2 prose-th:bg-slate-100 prose-td:border prose-td:border-slate-300 prose-td:p-2"
+        dangerouslySetInnerHTML={{ __html: htmlContent }}
       />
     </div>
   );

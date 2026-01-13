@@ -139,8 +139,8 @@ function Stepper({ active }) {
                 done
                   ? { background: "var(--color-brand-1)", color: "#fff", borderColor: "var(--color-brand-1)" }
                   : on
-                  ? { color: "var(--color-brand-1)", borderColor: "var(--color-brand-1)" }
-                  : {}
+                    ? { color: "var(--color-brand-1)", borderColor: "var(--color-brand-1)" }
+                    : {}
               }
             >
               {done ? "✓" : i + 1}
@@ -212,7 +212,7 @@ export default function BookingFlow() {
         LS_KEY,
         JSON.stringify({ step, enquiry, screening, taster, programme, accepted, savedAt: new Date().toISOString() })
       );
-    } catch {}
+    } catch { }
   }, [step, enquiry, screening, taster, programme, accepted]);
 
   useEffect(() => {

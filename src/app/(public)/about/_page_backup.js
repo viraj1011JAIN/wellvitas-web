@@ -1,4 +1,7 @@
 import Link from "next/link";
+import AboutHero from "@/components/AboutHero";
+import { fetchStory } from "@/lib/storyblok";
+import StoryblokProvider from "@/components/StoryblokProvider";
 
 export const metadata = {
   title: "About Wellvitas | Our Story, Causes & Team",
@@ -6,7 +9,7 @@ export const metadata = {
     "Wellvitas is a Glasgow-based wellness studio offering holistic therapies, programmes, and lifestyle support. Meet our team and learn what we stand for.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
   const site = {
     name: "Wellvitas",
     addressOneLine: "1626 Great Western Rd, Anniesland, Glasgow G13 1HH",
@@ -58,6 +61,29 @@ export default function AboutPage() {
     },
   ];
 
+  // 1. Fetch Storyblok story
+  let story = null;
+  try {
+    story = await fetchStory("about");
+  } catch (err) {
+    console.error("Failed to fetch 'about' story for Hero:", err);
+  }
+
+  // Default fallback if Storyblok is empty/missing
+  const defaultHero = {
+    _uid: "hero-about-default",
+    component: "intro_band",
+    tag: "About us",
+    title: "Care that’s personal, practical, and evidence-aware",
+    title_tag: "h1",
+    subtitle: "We blend gentle, tech-assisted therapies with clear explanations and a human, judgement-free approach. Explore our story, the causes we support, and the people behind the work.",
+    bg_color: "#2E0056",
+    buttons: [
+      { _uid: "btn-book", label: "Book an enquiry", link: { url: "/booking" } },
+      { _uid: "btn-therapies", label: "Explore therapies", link: { url: "/therapies" } }
+    ]
+  };
+
   return (
     <>
       {/* SEO: JSON-LD */}
@@ -67,60 +93,10 @@ export default function AboutPage() {
         suppressHydrationWarning
       />
 
-      {/* HERO (brand purple background, soft magenta buttons) */}
-      <section className="section">
-        <div
-          className="relative overflow-hidden rounded-2xl p-6 md:p-12"
-          style={{ backgroundColor: "#2E0056" }}
-        >
-          <div className="relative z-10">
-            <span
-              className="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
-              style={{
-                backgroundColor: "var(--color-brand-2-40)",
-                color: "#2E0056",
-              }}
-            >
-              About us
-            </span>
-
-            <h1 className="mt-3 text-3xl md:text-5xl font-bold tracking-tight text-white">
-              Care that’s personal, practical, and evidence-aware
-            </h1>
-
-            <p className="mt-4 max-w-2xl text-white/90">
-              We blend gentle, tech-assisted therapies with clear explanations and a human,
-              judgement-free approach. Explore our story, the causes we support, and the people
-              behind the work.
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href="/booking"
-                className="btn"
-                style={{
-                  backgroundColor: "var(--color-brand-2-40)",
-                  color: "#2E0056",
-                  border: "1px solid #7E0054",
-                }}
-              >
-                Book an enquiry
-              </Link>
-              <Link
-                href="/therapies"
-                className="btn"
-                style={{
-                  backgroundColor: "var(--color-brand-2-40)",
-                  color: "#2E0056",
-                  border: "1px solid #7E0054",
-                }}
-              >
-                Explore therapies
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* HERO: from Storyblok or fallback, with Live Preview support */}
+      <StoryblokProvider>
+        <AboutHero initialStory={story} defaultHero={defaultHero} />
+      </StoryblokProvider>
 
       {/* QUICK LINKS TO SUBPAGES */}
       <section className="section">

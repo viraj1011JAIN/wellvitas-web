@@ -6,13 +6,24 @@ import Image from "next/image";
 // adjust to your paths; if you have a jsconfig alias "@/*", you can switch back to "@/lib/therapies"
 import { THERAPIES, CATEGORIES, therapyImage } from "../lib/therapies";
 
-export default function HomeTherapies() {
+export default function HomeTherapies({ items, title = "Therapies", intro = "Browse by category and tap any card for details.", limit }) {
   const [category, setCategory] = useState("All");
 
-  const items = useMemo(() => {
-    if (category === "All") return THERAPIES;
-    return THERAPIES.filter((t) => t.category === category);
-  }, [category]);
+  // Use passed items if defined (even if empty), otherwise fallback
+  const therapyItems = typeof items !== "undefined" ? items : THERAPIES;
+
+  // Compute categories dynamically from the data
+  const categories = useMemo(() => {
+    const uniqueCats = new Set(therapyItems.map((t) => t.category).filter(Boolean));
+    return ["All", ...Array.from(uniqueCats).sort()];
+  }, [therapyItems]);
+
+  const filteredItems = useMemo(() => {
+    if (category === "All") return therapyItems;
+    return therapyItems.filter((t) => t.category === category);
+  }, [category, therapyItems]);
+
+  const displayedItems = limit ? filteredItems.slice(0, limit) : filteredItems;
 
   const showingAll = category === "All";
 
@@ -20,14 +31,14 @@ export default function HomeTherapies() {
     <section id="therapies" className="section">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="h-section">Therapies</h2>
-          <p className="mt-1 text-sm text-slate-600">Browse by category and tap any card for details.</p>
+          <h2 className="h-section">{title}</h2>
+          <p className="mt-1 text-sm text-slate-600">{intro}</p>
         </div>
 
         {/* Category filter (pills) */}
         <div className="mt-2 overflow-x-auto">
           <div className="flex gap-2 pb-1">
-            {CATEGORIES.map((c) => {
+            {categories.map((c) => {
               const active = c === category;
               return (
                 <button
@@ -53,17 +64,22 @@ export default function HomeTherapies() {
             : "mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
         }
       >
-        {items.map((t) => {
+        {displayedItems.map((t) => {
           const { src, alt } = therapyImage(t);
+          const href = t.viewLink
+            ? (t.viewLink.startsWith("/") || t.viewLink.startsWith("http") ? t.viewLink : `/${t.viewLink}`)
+            : `/therapies#${t.slug}`;
+          const label = t.viewLabel || "View details";
+
           return (
             <Link
-              key={t.slug}
-              href={`/therapies#${t.slug}`}
+              key={t._uid || t.id || t.slug}
+              href={href}
               className={[
                 "group overflow-hidden rounded-xl bg-white shadow-card ring-1 ring-slate-100 transition-transform",
                 "hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-brand-2)]",
               ].join(" ")}
-              aria-label={`View details for ${t.name}`}
+              aria-label={`${label} for ${t.name}`}
             >
               {/* Image */}
               <div className={["relative w-full", showingAll ? "h-28 md:h-32" : "h-36 md:h-44"].join(" ")}>
@@ -83,7 +99,7 @@ export default function HomeTherapies() {
               <div className={["flex items-center justify-between", showingAll ? "p-2.5" : "p-3"].join(" ")}>
                 <span className="text-xs text-slate-500">{t.category}</span>
                 <span className="text-[13px] font-medium group-hover:underline" style={{ color: "var(--color-brand-1)" }}>
-                  View details →
+                  {label} →
                 </span>
               </div>
             </Link>
