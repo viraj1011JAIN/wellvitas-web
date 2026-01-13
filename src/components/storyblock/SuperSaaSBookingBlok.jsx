@@ -1,6 +1,7 @@
 // src/components/storyblock/SuperSaaSBookingBlok.jsx
 "use client";
 
+import { storyblokEditable } from "@storyblok/react/rsc";
 import BookingWidget from "../BookingWidget";
 
 /**
@@ -12,5 +13,9 @@ import BookingWidget from "../BookingWidget";
  * This is a wrapper that connects Storyblok CMS to the BookingWidget component.
  */
 export default function SuperSaaSBookingBlok({ blok }) {
-  return <BookingWidget blok={blok} />;
+  return (
+    <div {...storyblokEditable(blok)}>
+      <BookingWidget blok={blok} />
+    </div>
+  );
 }

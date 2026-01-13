@@ -4,7 +4,7 @@ import { Resend } from "resend";
 
 export const dynamic = 'force-dynamic';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendKey = process.env.RESEND_API_KEY;
 
 function isEmail(v) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
@@ -13,6 +13,12 @@ function isEmail(v) {
 export async function POST(req) {
   try {
     const data = await req.json();
+
+    // Move initialization here to avoid build errors if key is missing during build
+    if (!resendKey) {
+      throw new Error("Missing RESEND_API_KEY");
+    }
+    const resend = new Resend(resendKey);
 
     // Honeypot: if "website" has a value, likely a bot
     if (data.website) {
@@ -67,7 +73,7 @@ SUBMISSION INFO:
     // FOR LOCALHOST: Use Resend test domain
     // FOR PRODUCTION: Change to "Wellvitas Bookings <bookings@wellvitas.co.uk>"
     const fromEmail = "onboarding@resend.dev";
-    
+
     // Company email - receives booking notifications
     const companyEmail = "info@wellvitas.co.uk";
 
@@ -108,10 +114,8 @@ Wellvitas Team
       `.trim(),
     });
 
-    console.log("[Booking] Emails sent successfully");
-    console.log("- Notification sent to:", companyEmail);
-    console.log("- Confirmation sent to:", data.enquiry.email);
-    
+    return NextResponse.json({ ok: true });
+
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("[Booking] Error:", e);

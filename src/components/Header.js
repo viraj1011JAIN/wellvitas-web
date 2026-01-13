@@ -10,12 +10,17 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/therapies", label: "Therapies" },
   { href: "/booking", label: "Booking" },
-  { href: "/visit", label: "Visit Us" },
+  { href: "/visit-us", label: "Visit Us" },
 ];
 
-export default function Header() {
+export default function Header({ logo, navLinks }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  // Fallback to static data if not provided
+  const navigation = navLinks || links;
+  const logoUrl = logo?.filename || "/logo.png";
+  const logoAlt = logo?.alt || "Wellvitas";
 
   useEffect(() => setOpen(false), [pathname]);
 
@@ -32,20 +37,28 @@ export default function Header() {
 
       <div className="container flex items-center justify-between gap-4 py-4 md:py-5">
         <Link href="/" aria-label="Wellvitas home" className="shrink-0 flex items-center">
-          <Image
-            src="/logo.png"
-            alt="Wellvitas"
-            width={180}
-            height={40}
-            priority
-            className="h-9 w-auto md:h-10"
-            sizes="(min-width: 768px) 180px, 148px"
-          />
+          {logo?.filename ? (
+            <img
+              src={logoUrl}
+              alt={logoAlt}
+              className="h-9 w-auto md:h-10 object-contain"
+            />
+          ) : (
+            <Image
+              src={logoUrl}
+              alt={logoAlt}
+              width={180}
+              height={40}
+              priority
+              className="h-9 w-auto md:h-10"
+              sizes="(min-width: 768px) 180px, 148px"
+            />
+          )}
           <span className="sr-only">Wellvitas</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
-          {links.map((l) => {
+          {navigation.map((l) => {
             const on = pathname === l.href;
             return (
               <Link
@@ -94,7 +107,7 @@ export default function Header() {
             </div>
 
             <ul className="mt-4 space-y-2">
-              {links.map((l) => {
+              {navigation.map((l) => {
                 const on = pathname === l.href;
                 return (
                   <li key={l.href}>

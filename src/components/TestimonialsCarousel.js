@@ -1,8 +1,9 @@
 "use client";
 
+import { storyblokEditable } from "@storyblok/react/rsc";
 import { useEffect, useRef } from "react";
 
-export default function TestimonialsCarousel({ title = "Testimonials", items }) {
+export default function TestimonialsCarousel({ title = "Testimonials", items = [] }) {
   const scrollerRef = useRef(null);
   const timerRef = useRef(null);
   const isHoveringRef = useRef(false);
@@ -70,7 +71,7 @@ export default function TestimonialsCarousel({ title = "Testimonials", items }) 
       dir === 1
         ? cards.find((c) => c.offsetLeft > currentLeft + 10) ?? cards[0]
         : [...cards].reverse().find((c) => c.offsetLeft < currentLeft - 10) ??
-          cards[cards.length - 1];
+        cards[cards.length - 1];
 
     scroller.scrollTo({ left: target.offsetLeft, behavior: "smooth" });
   };
@@ -131,6 +132,7 @@ export default function TestimonialsCarousel({ title = "Testimonials", items }) 
               <article
                 key={i}
                 data-card
+                {...(t.original ? storyblokEditable(t.original) : {})}
                 className="shrink-0 snap-start rounded-2xl border-2 shadow-sm p-6"
                 style={{
                   background: "color-mix(in srgb, #2E0056 8%, white)",
