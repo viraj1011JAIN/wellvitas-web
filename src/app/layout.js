@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import WhatsAppFab from "@/components/WhatsAppFab";
 import { AuthProvider } from "@/providers/AuthProvider";
 import { Montserrat } from "next/font/google";
-import { fetchStory, fetchTopLevelPages } from "@/lib/storyblok";
+import { fetchStory } from "@/lib/storyblok";
 
 export const metadata = {
   title: "Wellvitas - Holistic Therapies in Glasgow",
@@ -25,47 +25,63 @@ export default async function RootLayout({ children }) {
   let footerProps = {};
 
   try {
-    const configStory = await fetchStory("config", { version: "published" }); // Use published by default, or draft if needed
+    const version = process.env.NODE_ENV === 'development' ? 'draft' : 'published';
+    const configStory = await fetchStory("config", { version });
 
     if (configStory && configStory.content) {
       // --- Header Logic ---
       let links = [];
-      // 1. Try Manual Nav from Config
       if (configStory.content.header_nav?.length > 0) {
-        links = configStory.content.header_nav.map(item => ({
-          label: item.label,
-          href: item.link?.cached_url ? (item.link.cached_url.startsWith('http') || item.link.cached_url.startsWith('/') ? item.link.cached_url : `/${item.link.cached_url}`) : (item.url || "#")
-        }));
-      } else {
-        // 2. Fallback: Automatic Top-Level Pages
-        console.log("No manual nav found, fetching top-level pages...");
-        links = await fetchTopLevelPages();
+        links = configStory.content.header_nav.map(item => {
+          const label = item.Label || item.label || "";
+          const linkObj = item.Link || item.link;
+
+          let href = linkObj?.cached_url
+            ? (linkObj.cached_url.startsWith('http') || linkObj.cached_url.startsWith('/') ? linkObj.cached_url : `/${linkObj.cached_url}`)
+            : (item.url || "#");
+
+          if (href === '/home') href = '/';
+
+          return {
+            id: item._uid,
+            label: label,
+            href: href
+          };
+        });
       }
 
       headerProps = {
         logo: configStory.content.header_logo,
-        navLinks: links.length > 0 ? links : undefined
+        navLinks: links.length > 0 ? links : []
       };
 
       // --- Footer Logic ---
-      let footerLinks = configStory.content.footer_links?.map(item => ({
-        label: item.label,
-        href: item.link?.cached_url ? (item.link.cached_url.startsWith('http') || item.link.cached_url.startsWith('/') ? item.link.cached_url : `/${item.link.cached_url}`) : (item.url || "#")
-      })) || [];
+      const rawFooterLinks = configStory.content.footer_nav || configStory.content.footer_links;
+      let footerLinks = rawFooterLinks?.map(item => {
+        const label = item.Label || item.label || "";
+        const linkObj = item.Link || item.link;
 
-      // If no manual footer links, fallback to the main navigation (which might be auto-fetched)
-      if (footerLinks.length === 0) {
-        footerLinks = links;
-      }
+        let href = linkObj?.cached_url
+          ? (linkObj.cached_url.startsWith('http') || linkObj.cached_url.startsWith('/') ? linkObj.cached_url : `/${linkObj.cached_url}`)
+          : (item.url || "#");
+
+        if (href === '/home') href = '/';
+
+        return {
+          id: item._uid,
+          label: label,
+          href: href
+        };
+      }) || [];
 
       footerProps = {
         contact: {
           address: configStory.content.footer_address,
-          email: configStory.content.footer_email,
-          phone: configStory.content.footer_phone,
+          email: configStory.content.footer_email || configStory.content.Footer_Email || configStory.content.email || configStory.content.Email,
+          phone: configStory.content.footer_phone || configStory.content.Footer_Phone || configStory.content.phone || configStory.content.Phone,
         },
-        navLinks: footerLinks.length > 0 ? footerLinks : undefined,
-        mapUrl: configStory.content.footer_map_url
+        navLinks: footerLinks,
+        mapUrl: configStory.content.footer_map_url || configStory.content.map_url
       };
     }
   } catch (e) {

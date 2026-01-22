@@ -17,8 +17,8 @@ export default function Header({ logo, navLinks }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // Fallback to static data if not provided
-  const navigation = navLinks || links;
+  // Fallback to empty if not provided (manual management)
+  const navigation = navLinks || [];
   const logoUrl = logo?.filename || "/logo.png";
   const logoAlt = logo?.alt || "Wellvitas";
 
@@ -62,7 +62,7 @@ export default function Header({ logo, navLinks }) {
             const on = pathname === l.href;
             return (
               <Link
-                key={l.href}
+                key={l.id || l.href}
                 href={l.href}
                 className={`nav-link font-semibold ${on ? "nav-link--on" : ""}`}
                 style={{ color: "#ffffff" }}
@@ -110,7 +110,7 @@ export default function Header({ logo, navLinks }) {
               {navigation.map((l) => {
                 const on = pathname === l.href;
                 return (
-                  <li key={l.href}>
+                  <li key={l.id || l.href}>
                     <Link
                       href={l.href}
                       className={`block rounded-lg px-3 py-2 transition text-white hover:bg-white/10 ${on ? "ring-1 ring-white/30" : ""}`}

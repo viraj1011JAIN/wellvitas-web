@@ -34,12 +34,7 @@ export default function Footer({ contact, navLinks, mapUrl }) {
     );
   };
 
-  const links = navLinks || [
-    { href: "/about", label: "About" },
-    { href: "/therapies", label: "Therapies" },
-    { href: "/booking", label: "Booking" },
-    // News link removed from default to match dynamic simplicity, or keep it? Keeping logic simple.
-  ];
+  const links = navLinks || [];
 
   return (
     <>
@@ -87,7 +82,7 @@ export default function Footer({ contact, navLinks, mapUrl }) {
               <h3 className="font-bold text-white">Quick Links</h3>
               <ul className="mt-3 space-y-2 text-sm font-semibold">
                 {links.map((l, i) => (
-                  <li key={i}>
+                  <li key={l.id || l.href || i}>
                     <Link
                       className="underline decoration-white/50 hover:decoration-white text-white"
                       href={l.href}
